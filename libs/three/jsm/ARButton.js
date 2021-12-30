@@ -162,7 +162,7 @@ class ARButton {
 			stylizeElement( button );
 			
 
-			navigator.xr.isSessionSupported( 'immersive-ar' ).then( function ( supported ) {
+			navigator.xr.isSessionSupported( 'immersive-vr' ).then( function ( supported ) {
 				
 
 				supported ? showStartAR() : showARNotSupported();
