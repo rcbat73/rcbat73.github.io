@@ -103,7 +103,7 @@ class ARButton {
 					navigator.xr.requestSession( 'immersive-ar', sessionInit )
 					.then( onSessionStarted )
 					.catch(function(error) {
-						document.querySelector('a').textContent = error;
+						/* document.querySelector('a').textContent = error; */
 					});
 
 				} else {
@@ -162,6 +162,7 @@ class ARButton {
 			button.style.display = 'none';
 
 			stylizeElement( button );
+			document.querySelector('a').textContent = navigator.xr;
 
 			navigator.xr.isSessionSupported( 'immersive-ar' ).then( function ( supported ) {
 				
