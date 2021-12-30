@@ -156,7 +156,7 @@ class ARButton {
 
 		}
 
-		document.querySelector('a').textContent = navigator;
+		document.querySelector('a').innerHTML = navigator.xr.isSessionSupported( 'immersive-ar' );
 
 		if ( 'xr' in navigator ) {
 
