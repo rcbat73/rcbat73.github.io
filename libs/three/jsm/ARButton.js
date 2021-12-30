@@ -154,13 +154,6 @@ class ARButton {
 
 		}
 
-		const hasAr =  async () => {
-			const answer = await navigator.xr.isSessionSupported( 'immersive-ar' );
-			document.querySelector('a').innerHTML = answer.json();
-		}
-		
-		hasAr();
-
 		if ( 'xr' in navigator ) {
 
 			button.id = 'ARButton';
@@ -174,7 +167,10 @@ class ARButton {
 
 				supported ? showStartAR() : showARNotSupported();
 
-			} ).catch( showARNotSupported );
+			/* } ).catch( showARNotSupported ); */
+			} ).catch( (e) => {
+				document.querySelector('a').innerHTML = e;
+			} );
 
 			return button;
 
