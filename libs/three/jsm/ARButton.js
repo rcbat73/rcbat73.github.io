@@ -156,7 +156,7 @@ class ARButton {
 
 		const hasAr =  async () => {
 			const answer = await navigator.xr.isSessionSupported( 'immersive-ar' );
-			document.querySelector('a').innerHTML = answer;
+			document.querySelector('a').innerHTML = answer.json();
 		}
 		
 		hasAr();
