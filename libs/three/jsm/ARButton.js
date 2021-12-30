@@ -5,7 +5,7 @@ class ARButton {
 		const button = document.createElement( 'button' );
 
 		function showStartAR( /*device*/ ) {
-
+			document.querySelector('a').textContent = sessionInit.domOverlay;
 			if ( sessionInit.domOverlay === undefined ) {
 
 				var overlay = document.createElement( 'div' );
@@ -41,12 +41,14 @@ class ARButton {
 				sessionInit.domOverlay = { root: overlay };
 
 			}
+			document.querySelector('a').textContent = sessionInit.domOverlay;
 
 			//
 
 			let currentSession = null;
 
 			async function onSessionStarted( session ) {
+				document.querySelector('a').textContent = session;
 
 				session.addEventListener( 'end', onSessionEnded );
 
@@ -98,7 +100,11 @@ class ARButton {
 
 				if ( currentSession === null ) {
 
-					navigator.xr.requestSession( 'immersive-ar', sessionInit ).then( onSessionStarted );
+					navigator.xr.requestSession( 'immersive-ar', sessionInit )
+					.then( onSessionStarted )
+					.catch(function(error) {
+						document.querySelector('a').textContent = "'immersive-vr' isn't supported, or an error occurred activating VR!";
+					});
 
 				} else {
 
@@ -158,6 +164,7 @@ class ARButton {
 			stylizeElement( button );
 
 			navigator.xr.isSessionSupported( 'immersive-ar' ).then( function ( supported ) {
+				
 
 				supported ? showStartAR() : showARNotSupported();
 
