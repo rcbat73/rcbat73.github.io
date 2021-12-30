@@ -5,7 +5,6 @@ class ARButton {
 		const button = document.createElement( 'button' );
 
 		function showStartAR( /*device*/ ) {
-			document.querySelector('a').textContent = sessionInit.domOverlay;
 			if ( sessionInit.domOverlay === undefined ) {
 
 				var overlay = document.createElement( 'div' );
@@ -41,7 +40,6 @@ class ARButton {
 				sessionInit.domOverlay = { root: overlay };
 
 			}
-			document.querySelector('a').textContent = sessionInit.domOverlay;
 
 			//
 
