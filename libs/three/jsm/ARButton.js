@@ -103,7 +103,7 @@ class ARButton {
 					navigator.xr.requestSession( 'immersive-ar', sessionInit )
 					.then( onSessionStarted )
 					.catch(function(error) {
-						document.querySelector('a').textContent = "'immersive-vr' isn't supported, or an error occurred activating VR!";
+						document.querySelector('a').textContent = error;
 					});
 
 				} else {
