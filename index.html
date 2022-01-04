@@ -37,13 +37,19 @@
 		function onSceneLoaded() {
 			const raycaster = document.querySelector('[ar-raycaster]');
 			const cursor = document.querySelector('#cursor');
+			const walker = document.querySelector('#walker');
+			
 			raycaster.addEventListener('raycaster-intersection', (event) => {
 				cursor.setAttribute('position', event.detail.intersections[0].point);
+			});
+			
+			raycaster.addEventListener('click', () => {
+				walker.setAttribute('position', raycaster.components.cursor.intersection.point);
 			});
 		}
 	  
 		const scene = document.querySelector('a-scene');
-		scene.addEventListener('loaded', onSceneLoaded);
+		scene.addEventListener('loaded', onSceneLoaded);		
 	</script>
 		
 	<a-scene
@@ -76,7 +82,7 @@
 		<a-entity id="walker" gltf-model="#cesium-man" position="0 0 -5" scale="0.5 0.5 0.5" animation-mixer>
 		</a-entity>
 		<a-entity camera ar-raycaster raycaster cursor="fuse:false"></a-entity>
-		<a-ring id="cursor" radius-inner="0.1" radius-outer="0.2"  
+		<a-ring id="cursor" radius-inner="0.2" radius-outer="0.4"  
         	color="teal" position="0 -0.8 -5" rotation="-90 0 0">
 </a-ring>
 	</a-scene>
