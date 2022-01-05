@@ -122,9 +122,9 @@
 	<body>
 		<a-scene ar raycaster-move="target:#mark">           
 			<!-- Use AR raycaster, and set raycaster to ignore all A-Frame objects like logos. -->
-			<a-entity ar-raycaster raycaster="objects:none"></a-entity>
+			<a-entity ar-raycaster raycaster="objects: .mark"></a-entity>
 			<!-- Declare a ring to use as the raycaster intersection mark. -->
-			<a-ring id="mark" rotation="-90 0 0"  position="0 0 -5" radius-inner="0.1" radius-outer="0.2"></a-ring>
+			<a-ring id="mark" class="mark" rotation="-90 0 0"  position="0 0 -5" radius-inner="0.1" radius-outer="0.2"></a-ring>
 			<!-- <a-ring id="mark" class="clickable" radius-inner="0.1" radius-outer="0.2"  
 					color="teal" position="0 -0.8 -15" rotation="-90 0 0">
 			</a-ring> -->
