@@ -13,12 +13,38 @@
 	  
 	<body>
 		<script>
-			AFRAME.registerComponent('cursor-listener', {
+			/* AFRAME.registerComponent('raycaster-listen', {
 				init: function () {
 					console.log(this.el);
 					this.el.addEventListener('click', function (evt) {					
-						console.log('I was clicked at: ', evt.detail.intersection.point);
+						console.log('I was clicked at: ', evt);
+					});					
+				}
+			}); */
+			AFRAME.registerComponent('raycaster-listen', {
+				init: function () {					
+				// Use events to figure out what raycaster is listening so we don't have to
+				// hardcode the raycaster.
+					this.el.addEventListener('raycaster-intersected', evt => {
+						this.raycaster = evt.detail.el;
+						const walker = document.querySelector('#walker');
+						const raycaster = this.raycaster;
+						this.raycaster.addEventListener('click', () => {
+							walker.setAttribute('position', raycaster.components.cursor.intersection.point);
+						});
 					});
+					this.el.addEventListener('raycaster-intersected-cleared', evt => {
+						this.raycaster = null;
+					});					
+				},
+				tick: function () {
+					if (!this.raycaster) { return; }  // Not intersecting.
+
+					let intersection = this.raycaster.components.raycaster.getIntersection(this.el);
+					if (!intersection) { return; }
+					console.log(intersection.point);
+					const cursor = document.querySelector('#cursor');
+					cursor.setAttribute('position', event.detail.intersections[0].point);
 				}
 			});
 		</script>
@@ -29,6 +55,7 @@
 			vr-mode-ui="enabled: false"
 			gesture-detector
 			id="scene"
+			cursor-listener
 		>
 			<a-assets>
 				<a-asset id="cesium-man" src="CesiumMan.glb"></a-asset>
@@ -40,10 +67,47 @@
 				scale="0.5 0.5 0.5"
 				animation-mixer
 				gesture-handler
+				
 			>
 			</a-entity>	
-			<a-entity camera></a-entity>		  
+			<a-entity camera raycaster="objects: .clickable" cursor="fuse:false"></a-entity>
+			<a-ring id="cursor" class="clickable" radius-inner="0.1" radius-outer="0.2"  
+					color="teal" position="0 -0.8 -5" rotation="-90 0 0" raycaster-listen>
+			</a-ring>		  
 		</a-scene>
+		<!-- <script type="text/javascript">
+			function onSceneLoaded() {
+				const scene = document.querySelector('a-scene');
+	  
+			  const walker = document.querySelector('#walker');
+			  const { stringify } = AFRAME.utils.coordinates;
+	  
+			  let firstTime = true;
+			  scene.addEventListener('click', () => {
+				const target = raycaster.components.cursor.intersection.point;
+	  
+				if (firstTime) {
+				  walker.setAttribute('position', target);
+				  firstTime = false;
+				} else {
+				  const currentPosition = walker.object3D.position;
+				  const distance = currentPosition.distanceTo(target);
+	  
+				  walker.object3D.lookAt(target);
+	  
+				  const animation = document.createElement('a-animation');
+				  animation.setAttribute('attribute', 'position');
+				  animation.setAttribute('to', stringify(target));
+				  animation.setAttribute('dur', distance * 7000);
+				  animation.setAttribute('easing', 'linear');
+				  walker.appendChild(animation);
+				}
+			  });
+			}
+	  
+			const scene = document.querySelector('a-scene');
+			scene.addEventListener('loaded', onSceneLoaded);
+		  </script> -->
 	</body>
 </html>
 
