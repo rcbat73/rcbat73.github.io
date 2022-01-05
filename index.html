@@ -68,8 +68,10 @@
 
 				init: function () {
 					this.el.addEventListener('raycaster-intersection', function () {
-					console.log('Player hit something!');
-					});
+						console.log('Player hit something!');
+						const mark = document.querySelector('#mark');
+						mark.setAttribute('material', 'color: green');
+					});					
 				}
 			});
 		</script>
@@ -79,7 +81,7 @@
 			<a-entity id="player" collider-check>
 				<a-entity ar-raycaster raycaster="objects: .collidable" position="0 -0.9 -5" rotation="90 0 0"></a-entity>
 			  </a-entity>
-			<a-entity class="collidable" geometry="primitive: box" position="1 0 -10" material="color: red"></a-entity>
+			<a-entity id="mark" class="collidable" geometry="primitive: box" position="1 0 -10" material="color: red"></a-entity>
 			<!-- <a-entity camera look-controls position="0 1.6 0"></a-entity> -->
 		</a-scene>
 	</body>
