@@ -66,7 +66,7 @@
 
 			// AFRAME no longer sends intersection event every time intersection changes position;
 			// this component is modified from docs to move a different entity than the one hit.
-			AFRAME.registerComponent('raycaster-move', {
+			/* AFRAME.registerComponent('raycaster-move', {
 				schema: {
 					target: {type: 'selector'}
 				},
@@ -76,7 +76,7 @@
 					
 					this.el.addEventListener('raycaster-intersected', evt => {
 						this.raycaster = evt.detail.el;
-						console.log('Hello!');
+						alert('Hello!');
 					});
 					this.el.addEventListener('raycaster-intersected-cleared', evt => {
 						this.raycaster = null;
@@ -90,10 +90,9 @@
 
 					let intersection = this.raycaster.components.raycaster.getIntersection(this.el);
 					if (!intersection) { return; }
-					console.log(intersection.point);
 					this.data.target.setAttribute("position", intersection.point);
 				}
-			});
+			}); */
 
 			const content = `
 				<a-entity>
