@@ -63,87 +63,24 @@
 		<script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
 		<script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
 		<script>
+			AFRAME.registerComponent('collider-check', {
+				dependencies: ['raycaster'],
 
-			// AFRAME no longer sends intersection event every time intersection changes position;
-			// this component is modified from docs to move a different entity than the one hit.
-			/* AFRAME.registerComponent('raycaster-move', {
-				schema: {
-					target: {type: 'selector'}
-				},
 				init: function () {
-					// Use events to figure out what raycaster is listening so we don't have to
-					// hardcode the raycaster.
-					
-					this.el.addEventListener('raycaster-intersected', evt => {
-						this.raycaster = evt.detail.el;
-						alert('Hello!');
+					this.el.addEventListener('raycaster-intersection', function () {
+					console.log('Player hit something!');
 					});
-					this.el.addEventListener('raycaster-intersected-cleared', evt => {
-						this.raycaster = null;
-					});
-				},
-				update: function (oldData) {
-					//
-				},
-				tick: function () {
-					if (!this.raycaster) { return; }  // Not intersecting.
-
-					let intersection = this.raycaster.components.raycaster.getIntersection(this.el);
-					if (!intersection) { return; }
-					this.data.target.setAttribute("position", intersection.point);
 				}
-			}); */
-
-			const content = `
-				<a-entity>
-					<a-sphere position="0 0.5 -5" scale="1 1 1"></a-sphere>
-				</a-entity>`;
-
-			function markit(e) {
-				// Put the logo where the mark is.
-				var mark = document.querySelector('#mark');
-				var el = document.createElement('a-entity');
-				AFRAME.scenes[0].appendChild(el);
-				el.innerHTML = content;
-				el.setAttribute('scale', '0.1, 0.1, 0.1');
-				el.setAttribute('position', mark.getAttribute('position'));
-				var inner = el.querySelector('a-sphere');
-				if (e.type == 'touchstart') { inner.setAttribute('material', 'color:red;opacity:0.5'); }
-				if (e.type == 'touchend') { inner.setAttribute('material', 'color:green;opacity:0.5'); }
-				if (e.type == 'click') { inner.setAttribute('material', 'color:blue;opacity:0.5'); }
-			}
-
-			window.addEventListener('touchstart', markit);
-			window.addEventListener('touchend', markit);
-			window.addEventListener('click', markit);
+			});
 		</script>
 	</head>
 	<body>
-		<a-scene ar raycaster-move="target:#mark">           
-			<!-- Use AR raycaster, and set raycaster to ignore all A-Frame objects like logos. -->
-			<a-entity ar-raycaster raycaster="objects: .mark"></a-entity>
-			<!-- Declare a ring to use as the raycaster intersection mark. -->
-			<a-ring id="mark" class="mark" rotation="-90 0 0"  position="0 0 -5" radius-inner="0.1" radius-outer="0.2"></a-ring>
-			<!-- <a-ring id="mark" class="clickable" radius-inner="0.1" radius-outer="0.2"  
-					color="teal" position="0 -0.8 -15" rotation="-90 0 0">
-			</a-ring> -->
-			<!-- <a-ring id="mark" rotation="-90 0 0" radius-inner="0.1" radius-outer="0.2" position="0 0 -5"></a-ring> -->
+		<a-scene ar>
+			<a-entity id="player" collider-check>
+				<a-entity ar-raycaster raycaster="objects: .collidable" position="0 -0.9 -5" rotation="90 0 0"></a-entity>
+			  </a-entity>
+			<a-entity class="collidable" geometry="primitive: box" position="1 0 -10" material="color: red"></a-entity>
+			<!-- <a-entity camera look-controls position="0 1.6 0"></a-entity> -->
 		</a-scene>
-		<script>
-			var raycaster = document.querySelector('[ar-raycaster]');
-			var mark = document.querySelector('#mark');
-			
-			raycaster.addEventListener('raycaster-intersection', function (evt) {
-				// Turn the mark green and move it to the intersection point.
-				mark.setAttribute('color', 'green');
-				// Note, movement will now be done via raycaster-move component.
-				//mark.setAttribute('position', evt.detail.intersections[0].point);
-			});
-			
-			raycaster.addEventListener('raycaster-intersection-cleared', function (evt) {
-				// Turn the mark red.  FIXME: lerp position
-				mark.setAttribute('color', 'red');
-			});      
-		</script>
 	</body>
 </html>
